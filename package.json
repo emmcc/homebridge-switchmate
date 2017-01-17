@@ -1,0 +1,11 @@
+{
+  "name": "homebridge-switchmate", "version": "0.0.1", "description": "Switchmate automation, via Homebridge for the impatient.", "license": "MIT", "keywords": [
+    "homebridge-plugin", "switchmate"
+  ], "engines": {
+    "homebridge": ">=0.4.0"
+  },
+  "dependencies": {
+    "node-switchmate": ">=0.0.1"
+  }
+
+}

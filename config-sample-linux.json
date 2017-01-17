@@ -1,0 +1,15 @@
+{
+    "platforms": [
+        {
+            "platform": "Switchmate",
+            "switchmates": [
+                {
+                    "displayName": "Porch Light",
+                    "id": "fe5c32ba4c95",
+                    "authCode": "VCcHQA==",
+                    "model": "RSM001W"
+                }
+            ]
+        }
+    ]
+}

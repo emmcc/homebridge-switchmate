@@ -62,6 +62,14 @@ Switchmate3Platform.prototype.didFinishLaunching = function () {
             mySwitchmate3.getService(Service.Switch)
                     .getCharacteristic(Characteristic.On).getValue();
         });
+        platform.SmManager.event.on('smBatteryLevelChange', function (smid, state)
+        {
+            var mySwitchmate3 = platform.accessories[smid];
+            mySwitchmate3.getService(Service.BatteryService)
+                    .getCharacteristic(Characteristic.BatteryLevel).getValue();
+            mySwitchmate3.getService(Service.BatteryService)
+                    .getCharacteristic(Characteristic.StatusLowBattery).getValue();
+        });
         platform.SmManager.Initialize(platform.switchmate3s);
     }
 };
@@ -110,6 +118,18 @@ Switchmate3Platform.prototype.setService = function (accessory) {
             .on('get', this.getToggleState.bind(this, accessory.context));
 
     accessory.on('identify', this.identify.bind(this, accessory.context));
+
+    if ( !accessory.getService(Service.BatteryService) ) {
+        accessory.addService(Service.BatteryService);
+    }
+
+    accessory.getService(Service.BatteryService)
+            .getCharacteristic(Characteristic.BatteryLevel)
+            .on('get', this.getBatteryLevel.bind(this, accessory.context));
+
+    accessory.getService(Service.BatteryService)
+            .getCharacteristic(Characteristic.StatusLowBattery)
+            .on('get', this.getBatteryIsLow.bind(this, accessory.context));
 };
 
 Switchmate3Platform.prototype.getInitState = function (accessory, data) {
@@ -125,6 +145,14 @@ Switchmate3Platform.prototype.getInitState = function (accessory, data) {
 
     accessory.getService(Service.Switch)
             .getCharacteristic(Characteristic.On)
+            .getValue();
+
+    accessory.getService(Service.BatteryService)
+            .getCharacteristic(Characteristic.BatteryLevel)
+            .getValue();
+
+    accessory.getService(Service.BatteryService)
+            .getCharacteristic(Characteristic.StatusLowBattery)
             .getValue();
 };
 
@@ -147,4 +175,17 @@ Switchmate3Platform.prototype.identify = function (mySwitchmate3, paired, callba
     var platform = this;
     platform.log("Identify requested for " + mySwitchmate3.name);
     callback();
+};
+
+Switchmate3Platform.prototype.getBatteryLevel = function (mySwitchmate3, callback) {
+    var platform = this;
+    var battery = platform.SmManager.GetSwitchmate3BatteryLevel(mySwitchmate3.id);
+    platform.log("Battery Level of %s (%s) is: %s%", mySwitchmate3.displayName, mySwitchmate3.name, battery);
+    callback(null, battery);
+};
+
+Switchmate3Platform.prototype.getBatteryIsLow = function (mySwitchmate3, callback) {
+    var platform = this;
+    var isLowBattery = platform.SmManager.GetSwitchmate3BatteryLevel(mySwitchmate3.id) < 25;
+    callback(null, isLowBattery);
 };

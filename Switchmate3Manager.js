@@ -55,6 +55,7 @@ var Switchmate3Manager = function ()
                 {
                     manager.Switchmate3s[smid].ToggleState = foundSm.ToggleState;
                     manager.event.emit('smToggleStateChange', smid, foundSm.ToggleState);
+                    manager.event.emit('smBatteryLevelChange', smid, foundSm.BatteryLevel);
                 }
                 manager.Switchmate3s[smid].foundMe();
             }
@@ -74,6 +75,18 @@ Switchmate3Manager.prototype.Initialize = function (sm_config)
         }
         manager.FindAllSwitchmate3s();
         manager.initialized = true;
+    }
+};
+
+Switchmate3Manager.prototype.GetSwitchmate3BatteryLevel = function (smid)
+{
+    manager = this;
+    if (typeof manager.Switchmate3s[smid] !== 'undefined')
+    {
+        return manager.Switchmate3s[smid].BatteryLevel || 100; //if Switchmate3 exists, return its last known Battery Level.
+    } else
+    {
+        return 100;  //otherwise, just assume it is 100%.
     }
 };
 
@@ -107,7 +120,9 @@ Switchmate3Manager.prototype.On = function (smid)
         (manager.Switchmate3s[smid].ToggleState === false || manager.Switchmate3s[smid].ToggleState === null))
     {
         var ToggleMode = manager.Switchmate3s[smid].ToggleMode();
-        //ToggleMode.event.on('toggleDone', restartScan);
+        ToggleMode.event.once('toggleDone', function() {
+            manager.event.emit('smBatteryLevelChange', smid, manager.Switchmate3s[smid].BatteryLevel);
+        });
         ToggleMode.TurnOn();
     }
 };
@@ -119,6 +134,9 @@ Switchmate3Manager.prototype.Off = function (smid)
         manager.Switchmate3s[smid].ToggleState === true || manager.Switchmate3s[smid].ToggleState === null))
     {
         var ToggleMode = manager.Switchmate3s[smid].ToggleMode();
+        ToggleMode.event.once('toggleDone', function() {
+            manager.event.emit('smBatteryLevelChange', smid, manager.Switchmate3s[smid].BatteryLevel);
+        });
         ToggleMode.TurnOff();
     }
 };

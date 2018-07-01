@@ -141,6 +141,8 @@ Switchmate3Platform.prototype.getInitState = function (accessory, data) {
     accessory.context.model = data.model || "";
     info.setCharacteristic(Characteristic.Model, accessory.context.model);
 
+    accessory.context.lowBatteryPercent = data.lowBatteryPercent || 25;
+
     info.setCharacteristic(Characteristic.SerialNumber, accessory.context.id);
 
     accessory.getService(Service.Switch)
@@ -186,6 +188,6 @@ Switchmate3Platform.prototype.getBatteryLevel = function (mySwitchmate3, callbac
 
 Switchmate3Platform.prototype.getBatteryIsLow = function (mySwitchmate3, callback) {
     var platform = this;
-    var isLowBattery = platform.SmManager.GetSwitchmate3BatteryLevel(mySwitchmate3.id) < 25;
+    var isLowBattery = platform.SmManager.GetSwitchmate3BatteryLevel(mySwitchmate3.id) <= parseInt(mySwitchmate3.lowBatteryPercent);
     callback(null, isLowBattery);
 };

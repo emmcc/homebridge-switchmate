@@ -6,7 +6,8 @@
                 {
                     "displayName": "Porch Light",
                     "id": "fe5c32ba4c95",
-                    "model": "TSM003W"
+                    "model": "TSM003W",
+                    "lowBatteryPercent": 25
                 }
             ]
         }

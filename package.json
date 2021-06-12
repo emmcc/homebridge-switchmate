@@ -1,11 +1,24 @@
 {
-  "name": "homebridge-switchmate", "version": "0.0.1", "description": "Switchmate automation, via Homebridge for the impatient.", "license": "MIT", "keywords": [
+  "name": "homebridge-switchmate3",
+  "version": "0.0.3",
+  "author": "Jackie Yang",
+  "description": "Switchmate3 automation, via Homebridge for the impatient.",
+  "license": "MIT",
+  "keywords": [
     "homebridge-plugin", "switchmate"
-  ], "engines": {
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valkjsaaa/homebridge-switchmate3.git"
+  },
+  "bugs": {
+    "url": "https://github.com/valkjsaaa/homebridge-switchmate3/issues"
+  },
+  "homepage": "https://github.com/valkjsaaa/homebridge-switchmate3",
+  "engines": {
     "homebridge": ">=0.4.0"
   },
   "dependencies": {
-    "node-switchmate": ">=0.0.1"
+    "node-switchmate3": ">=0.0.4"
   }
-
 }

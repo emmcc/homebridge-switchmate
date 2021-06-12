@@ -6,8 +6,8 @@
                 {
                     "displayName": "Porch Light",
                     "id": "fe5c32ba4c95",
-                    "authCode": "VCcHQA==",
-                    "model": "RSM001W"
+                    "model": "TSM003W",
+                    "lowBatteryPercent": 25
                 }
             ]
         }
